@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView            leftMotorPower;
     private TextView            rightMotorPower;
+    private TextView            turnInterval;
 
 
     public  static final String     REALTIME =          "REALTIME";
@@ -117,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
         update_settings     =   findViewById(R.id.update_set);
         leftMotorPower      =   findViewById(R.id.leftMotorPower);
         rightMotorPower     =   findViewById(R.id.rightMotorPower);
+        turnInterval        =   findViewById(R.id.turnInterval);
 
         realTime.setBackgroundColor(Color.GREEN);
         autonomic_forward.setVisibility(View.INVISIBLE);
@@ -124,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
         leftMotorPower.setVisibility(View.INVISIBLE);
         rightMotorPower.setVisibility(View.INVISIBLE);
+        turnInterval.setVisibility(View.INVISIBLE);
         update_settings.setVisibility(View.INVISIBLE);
 
         connectBtn.setOnClickListener(new View.OnClickListener() {
@@ -270,6 +273,7 @@ public class MainActivity extends AppCompatActivity {
                 autonomic_stop.setVisibility(View.INVISIBLE);
                 leftMotorPower.setVisibility(View.VISIBLE);
                 rightMotorPower.setVisibility(View.VISIBLE);
+                turnInterval.setVisibility(View.VISIBLE);
                 update_settings.setVisibility(View.VISIBLE);
             }
         });
@@ -280,7 +284,8 @@ public class MainActivity extends AppCompatActivity {
                 if(wsConnection){
                     String leftMotor = leftMotorPower.getText().toString();
                     String rightMotor = rightMotorPower.getText().toString();
-                    sendMessage("LP:"+leftMotor+" RP:"+rightMotor);
+                    String turnTime = turnInterval.getText().toString();
+                    sendMessage("LP:"+leftMotor+" RP:"+rightMotor+" TT:"+turnTime);
                 }
             }
         });

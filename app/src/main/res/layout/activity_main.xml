@@ -187,4 +187,12 @@
         android:layout_marginTop="550dp"
         android:text="UPDATE" />
 
+    <EditText
+        android:id="@+id/turnInterval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="600dp"
+        android:ems="10"
+        android:inputType="number" />
+
 </RelativeLayout>
