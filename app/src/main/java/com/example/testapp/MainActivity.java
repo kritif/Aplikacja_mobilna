@@ -334,6 +334,7 @@ public class MainActivity extends AppCompatActivity {
             turnRightBtn.setVisibility(View.INVISIBLE);
             leftMotorPower.setVisibility(View.INVISIBLE);
             rightMotorPower.setVisibility(View.INVISIBLE);
+            turnInterval.setVisibility(View.INVISIBLE);
             update_settings.setVisibility(View.INVISIBLE);
             autonomic_forward.setVisibility(View.VISIBLE);
             autonomic_stop.setVisibility(View.VISIBLE);
@@ -352,6 +353,7 @@ public class MainActivity extends AppCompatActivity {
             autonomic_stop.setVisibility(View.INVISIBLE);
             leftMotorPower.setVisibility(View.INVISIBLE);
             rightMotorPower.setVisibility(View.INVISIBLE);
+            turnInterval.setVisibility(View.INVISIBLE);
             update_settings.setVisibility(View.INVISIBLE);
         }
     }
