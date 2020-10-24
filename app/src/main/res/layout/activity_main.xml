@@ -195,4 +195,19 @@
         android:ems="10"
         android:inputType="number" />
 
+    <Button
+        android:id="@+id/turnLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="550dp"
+        android:text="LEFT" />
+
+    <Button
+        android:id="@+id/turnRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="550dp"
+        android:text="RIGHT" />
+
 </RelativeLayout>

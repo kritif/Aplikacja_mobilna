@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private Button              rearBtn;
     private Button              leftBtn;
     private Button              rightBtn;
+    private Button              turnLeftBtn;
+    private Button              turnRightBtn;
     private Button              realTime;
     private Button              autonomic;
     private Button              autonomic_forward;
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
     public  static final String     ROBOT_WIFI_NAME =   "RPI_motor";
     private static final String     ROBOT_WIFI_PASS =   "rpimotorrpi";
     private static final String     FRONT =             "FRONT";
+    private static final String     TURN_LEFT =         "TLEFT";
+    private static final String     TURN_RIGHT =        "TRIGHT";
     private static final String     LEFT =              "LEFT";
     private static final String     RIGHT =             "RIGHT";
     private static final String     BACK =              "BACK";
@@ -106,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
         leftBtn             =   findViewById(R.id.leftBtn);
         rightBtn            =   findViewById(R.id.rightBtn);
         rearBtn             =   findViewById(R.id.rearBtn);
+        turnLeftBtn         =   findViewById(R.id.turnLeft);
+        turnRightBtn        =   findViewById(R.id.turnRight);
         autonomic           =   findViewById(R.id.autonomic);
         realTime            =   findViewById(R.id.realTime);
         frontSensor         =   findViewById(R.id.front_sensor);
@@ -158,6 +164,28 @@ public class MainActivity extends AppCompatActivity {
                     }
                     if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                         sendMessage(STOP);
+                    }
+                }
+                return false;
+            }
+        });
+        turnLeftBtn.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(robotMODE==REALTIME && wsConnection) {
+                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                        sendMessage(TURN_LEFT);
+                    }
+                }
+                return false;
+            }
+        });
+        turnRightBtn.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(robotMODE==REALTIME && wsConnection) {
+                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                        sendMessage(TURN_RIGHT);
                     }
                 }
                 return false;
@@ -269,6 +297,8 @@ public class MainActivity extends AppCompatActivity {
                 leftBtn.setVisibility(View.INVISIBLE);
                 rightBtn.setVisibility(View.INVISIBLE);
                 forwardBtn.setVisibility(View.INVISIBLE);
+                turnLeftBtn.setVisibility(View.INVISIBLE);
+                turnRightBtn.setVisibility(View.INVISIBLE);
                 autonomic_forward.setVisibility(View.INVISIBLE);
                 autonomic_stop.setVisibility(View.INVISIBLE);
                 leftMotorPower.setVisibility(View.VISIBLE);
@@ -300,6 +330,8 @@ public class MainActivity extends AppCompatActivity {
             leftBtn.setVisibility(View.INVISIBLE);
             rightBtn.setVisibility(View.INVISIBLE);
             forwardBtn.setVisibility(View.INVISIBLE);
+            turnLeftBtn.setVisibility(View.INVISIBLE);
+            turnRightBtn.setVisibility(View.INVISIBLE);
             leftMotorPower.setVisibility(View.INVISIBLE);
             rightMotorPower.setVisibility(View.INVISIBLE);
             update_settings.setVisibility(View.INVISIBLE);
@@ -314,6 +346,8 @@ public class MainActivity extends AppCompatActivity {
             leftBtn.setVisibility(View.VISIBLE);
             rightBtn.setVisibility(View.VISIBLE);
             forwardBtn.setVisibility(View.VISIBLE);
+            turnLeftBtn.setVisibility(View.VISIBLE);
+            turnRightBtn.setVisibility(View.VISIBLE);
             autonomic_forward.setVisibility(View.INVISIBLE);
             autonomic_stop.setVisibility(View.INVISIBLE);
             leftMotorPower.setVisibility(View.INVISIBLE);
