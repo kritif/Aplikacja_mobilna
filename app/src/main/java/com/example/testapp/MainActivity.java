@@ -58,7 +58,12 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView            leftMotorPower;
     private TextView            rightMotorPower;
-    private TextView            turnInterval;
+    private TextView            turnLeftInterval;
+    private TextView            turnRightInterval;
+    private TextView            leftMotorPowerAtLeftTurn;
+    private TextView            rightMotorPowerAtLeftTurn;
+    private TextView            leftMotorPowerAtRightTurn;
+    private TextView            rightMotorPowerAtRightTurn;
 
 
     public  static final String     REALTIME =          "REALTIME";
@@ -73,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String     BACK =              "BACK";
     private static final String     STOP =              "STOP";
     private static final String     AUT_GO_1 =          "A1GO";
-    private static final String     AUT_GO_2 =          "A1GO";
+    private static final String     AUT_GO_2 =          "A2GO";
     private static final String     AUT_STOP =          "ASTOP";
 
     public  boolean     wifiConnection =        false;
@@ -126,7 +131,12 @@ public class MainActivity extends AppCompatActivity {
         update_settings     =   findViewById(R.id.update_set);
         leftMotorPower      =   findViewById(R.id.leftMotorPower);
         rightMotorPower     =   findViewById(R.id.rightMotorPower);
-        turnInterval        =   findViewById(R.id.turnInterval);
+        turnLeftInterval    =   findViewById(R.id.turnLeftInterval);
+        turnRightInterval   =   findViewById(R.id.turnRightInterval);
+        leftMotorPowerAtLeftTurn    =   findViewById(R.id.leftMotorPowerTurnLeft);
+        rightMotorPowerAtLeftTurn   =   findViewById(R.id.rightMotorPowerTurnLeft);
+        leftMotorPowerAtRightTurn   =   findViewById(R.id.leftMotorPowerTurnRight);
+        rightMotorPowerAtRightTurn  =   findViewById(R.id.rightMotorPowerTurnRight);
         autonomic_keepgoing =   findViewById(R.id.keepgoing);
 
         realTime.setBackgroundColor(Color.GREEN);
@@ -136,7 +146,12 @@ public class MainActivity extends AppCompatActivity {
 
         leftMotorPower.setVisibility(View.INVISIBLE);
         rightMotorPower.setVisibility(View.INVISIBLE);
-        turnInterval.setVisibility(View.INVISIBLE);
+        turnLeftInterval.setVisibility(View.INVISIBLE);
+        turnRightInterval.setVisibility(View.INVISIBLE);
+        leftMotorPowerAtLeftTurn.setVisibility(View.INVISIBLE);
+        rightMotorPowerAtLeftTurn.setVisibility(View.INVISIBLE);
+        leftMotorPowerAtRightTurn.setVisibility(View.INVISIBLE);
+        rightMotorPowerAtRightTurn.setVisibility(View.INVISIBLE);
         update_settings.setVisibility(View.INVISIBLE);
 
         connectBtn.setOnClickListener(new View.OnClickListener() {
@@ -325,7 +340,12 @@ public class MainActivity extends AppCompatActivity {
                 autonomic_stop.setVisibility(View.INVISIBLE);
                 leftMotorPower.setVisibility(View.VISIBLE);
                 rightMotorPower.setVisibility(View.VISIBLE);
-                turnInterval.setVisibility(View.VISIBLE);
+                turnLeftInterval.setVisibility(View.VISIBLE);
+                turnRightInterval.setVisibility(View.VISIBLE);
+                leftMotorPowerAtLeftTurn.setVisibility(View.VISIBLE);
+                rightMotorPowerAtLeftTurn.setVisibility(View.VISIBLE);
+                leftMotorPowerAtRightTurn.setVisibility(View.VISIBLE);
+                rightMotorPowerAtRightTurn.setVisibility(View.VISIBLE);
                 update_settings.setVisibility(View.VISIBLE);
             }
         });
@@ -334,10 +354,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(wsConnection){
-                    String leftMotor = leftMotorPower.getText().toString();
-                    String rightMotor = rightMotorPower.getText().toString();
-                    String turnTime = turnInterval.getText().toString();
-                    sendMessage("LP:"+leftMotor+" RP:"+rightMotor+" TT:"+turnTime);
+                    String leftMotorForward = leftMotorPower.getText().toString();
+                    String rightMotorForward = rightMotorPower.getText().toString();
+                    String turnLeftTime = turnLeftInterval.getText().toString();
+                    String turnRightTime = turnRightInterval.getText().toString();
+                    String leftMpAtLeftTurn = leftMotorPowerAtLeftTurn.getText().toString();
+                    String rightMpAtLeftTurn = rightMotorPowerAtLeftTurn.getText().toString();
+                    String leftMpAtRightTurn = leftMotorPowerAtRightTurn.getText().toString();
+                    String rightMpAtRightTurn = rightMotorPowerAtRightTurn.getText().toString();
+                    sendMessage("LP:"+leftMotorForward+" RP:"+rightMotorForward+" TLT:"+turnLeftTime+" TRT:"+turnRightTime+" LMPL:"+leftMpAtLeftTurn+" RMPL:"+rightMpAtLeftTurn+" LMPR:"+leftMpAtRightTurn+" RMPR:"+rightMpAtRightTurn );
                 }
             }
         });
@@ -356,7 +381,12 @@ public class MainActivity extends AppCompatActivity {
             turnRightBtn.setVisibility(View.INVISIBLE);
             leftMotorPower.setVisibility(View.INVISIBLE);
             rightMotorPower.setVisibility(View.INVISIBLE);
-            turnInterval.setVisibility(View.INVISIBLE);
+            turnLeftInterval.setVisibility(View.INVISIBLE);
+            turnRightInterval.setVisibility(View.INVISIBLE);
+            leftMotorPowerAtLeftTurn.setVisibility(View.INVISIBLE);
+            rightMotorPowerAtLeftTurn.setVisibility(View.INVISIBLE);
+            leftMotorPowerAtRightTurn.setVisibility(View.INVISIBLE);
+            rightMotorPowerAtRightTurn.setVisibility(View.INVISIBLE);
             update_settings.setVisibility(View.INVISIBLE);
             autonomic_forward.setVisibility(View.VISIBLE);
             autonomic_keepgoing.setVisibility(View.VISIBLE);
@@ -377,7 +407,12 @@ public class MainActivity extends AppCompatActivity {
             autonomic_stop.setVisibility(View.INVISIBLE);
             leftMotorPower.setVisibility(View.INVISIBLE);
             rightMotorPower.setVisibility(View.INVISIBLE);
-            turnInterval.setVisibility(View.INVISIBLE);
+            turnLeftInterval.setVisibility(View.INVISIBLE);
+            turnRightInterval.setVisibility(View.INVISIBLE);
+            leftMotorPowerAtLeftTurn.setVisibility(View.INVISIBLE);
+            rightMotorPowerAtLeftTurn.setVisibility(View.INVISIBLE);
+            leftMotorPowerAtRightTurn.setVisibility(View.INVISIBLE);
+            rightMotorPowerAtRightTurn.setVisibility(View.INVISIBLE);
             update_settings.setVisibility(View.INVISIBLE);
         }
     }
