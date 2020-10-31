@@ -210,4 +210,12 @@
         android:layout_marginTop="550dp"
         android:text="RIGHT" />
 
+    <Button
+        android:id="@+id/keepgoing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="200dp"
+        android:layout_marginTop="550dp"
+        android:text="KEEEP GO" />
+
 </RelativeLayout>

@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private Button              realTime;
     private Button              autonomic;
     private Button              autonomic_forward;
+    private Button              autonomic_keepgoing;
     private Button              autonomic_stop;
     private Button              settings;
     private Button              update_settings;
@@ -71,7 +72,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String     RIGHT =             "RIGHT";
     private static final String     BACK =              "BACK";
     private static final String     STOP =              "STOP";
-    private static final String     AUT_GO =            "AGO";
+    private static final String     AUT_GO_1 =          "A1GO";
+    private static final String     AUT_GO_2 =          "A1GO";
     private static final String     AUT_STOP =          "ASTOP";
 
     public  boolean     wifiConnection =        false;
@@ -125,9 +127,11 @@ public class MainActivity extends AppCompatActivity {
         leftMotorPower      =   findViewById(R.id.leftMotorPower);
         rightMotorPower     =   findViewById(R.id.rightMotorPower);
         turnInterval        =   findViewById(R.id.turnInterval);
+        autonomic_keepgoing =   findViewById(R.id.keepgoing);
 
         realTime.setBackgroundColor(Color.GREEN);
         autonomic_forward.setVisibility(View.INVISIBLE);
+        autonomic_keepgoing.setVisibility(View.INVISIBLE);
         autonomic_stop.setVisibility(View.INVISIBLE);
 
         leftMotorPower.setVisibility(View.INVISIBLE);
@@ -267,9 +271,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!autonomicIsRunning && wsConnection){
-                    autonomicIsRunning = sendMessageWithResult(AUT_GO);
+                    autonomicIsRunning = sendMessageWithResult(AUT_GO_1);
                     if(autonomicIsRunning) {
+                        autonomic_keepgoing.setBackgroundColor(Color.RED);
                         autonomic_forward.setBackgroundColor(Color.GREEN);
+                        autonomic_stop.setBackgroundColor(Color.RED);
+                    }
+                }
+            }
+        });
+
+        autonomic_keepgoing.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                if(!autonomicIsRunning && wsConnection){
+                    autonomicIsRunning = sendMessageWithResult(AUT_GO_2);
+                    if(autonomicIsRunning) {
+                        autonomic_forward.setBackgroundColor(Color.RED);
+                        autonomic_keepgoing.setBackgroundColor(Color.GREEN);
                         autonomic_stop.setBackgroundColor(Color.RED);
                     }
                 }
@@ -284,6 +304,7 @@ public class MainActivity extends AppCompatActivity {
                     autonomicIsRunning = !sendMessageWithResult(AUT_STOP);
                     if(!autonomicIsRunning) {
                         autonomic_forward.setBackgroundColor(Color.RED);
+                        autonomic_keepgoing.setBackgroundColor(Color.RED);
                         autonomic_stop.setBackgroundColor(Color.GREEN);
                     }
                 }
@@ -300,6 +321,7 @@ public class MainActivity extends AppCompatActivity {
                 turnLeftBtn.setVisibility(View.INVISIBLE);
                 turnRightBtn.setVisibility(View.INVISIBLE);
                 autonomic_forward.setVisibility(View.INVISIBLE);
+                autonomic_keepgoing.setVisibility(View.INVISIBLE);
                 autonomic_stop.setVisibility(View.INVISIBLE);
                 leftMotorPower.setVisibility(View.VISIBLE);
                 rightMotorPower.setVisibility(View.VISIBLE);
@@ -337,6 +359,7 @@ public class MainActivity extends AppCompatActivity {
             turnInterval.setVisibility(View.INVISIBLE);
             update_settings.setVisibility(View.INVISIBLE);
             autonomic_forward.setVisibility(View.VISIBLE);
+            autonomic_keepgoing.setVisibility(View.VISIBLE);
             autonomic_stop.setVisibility(View.VISIBLE);
         }
 
@@ -350,6 +373,7 @@ public class MainActivity extends AppCompatActivity {
             turnLeftBtn.setVisibility(View.VISIBLE);
             turnRightBtn.setVisibility(View.VISIBLE);
             autonomic_forward.setVisibility(View.INVISIBLE);
+            autonomic_keepgoing.setVisibility(View.INVISIBLE);
             autonomic_stop.setVisibility(View.INVISIBLE);
             leftMotorPower.setVisibility(View.INVISIBLE);
             rightMotorPower.setVisibility(View.INVISIBLE);
@@ -474,35 +498,35 @@ public class MainActivity extends AppCompatActivity {
     }
     public void updateFrontSensorView(String dist){
         Double distance = Double.valueOf(dist);
-        if(distance<=10.0){ frontSensor.setImageResource(R.drawable.czujnik_4); }
-        if(distance>10.0) {frontSensor.setImageResource(R.drawable.czujnik_3); }
-        if(distance>20.0){ frontSensor.setImageResource(R.drawable.czujnik_2); }
-        if(distance>30.0){ frontSensor.setImageResource(R.drawable.czujnik_1); }
-        if(distance>40.0) {frontSensor.setImageResource(R.drawable.czujnik_0); }
+        if(distance<=10.0) frontSensor.setImageResource(R.drawable.czujnik_4);
+        if(distance>10.0)  frontSensor.setImageResource(R.drawable.czujnik_3);
+        if(distance>20.0)  frontSensor.setImageResource(R.drawable.czujnik_2);
+        if(distance>30.0)  frontSensor.setImageResource(R.drawable.czujnik_1);
+        if(distance>40.0)  frontSensor.setImageResource(R.drawable.czujnik_0);
     }
     public void updateLeftSensorView(String dist){
         Double distance = Double.valueOf(dist);
-        if(distance<=10.0){ leftSensor.setImageResource(R.drawable.czujnik_4); }
-        if(distance>10.0) {leftSensor.setImageResource(R.drawable.czujnik_3); }
-        if(distance>20.0){ leftSensor.setImageResource(R.drawable.czujnik_2); }
-        if(distance>30.0){ leftSensor.setImageResource(R.drawable.czujnik_1); }
-        if(distance>40.0) {leftSensor.setImageResource(R.drawable.czujnik_0); }
+        if(distance<=10.0) leftSensor.setImageResource(R.drawable.czujnik_4);
+        if(distance>10.0) leftSensor.setImageResource(R.drawable.czujnik_3);
+        if(distance>20.0) leftSensor.setImageResource(R.drawable.czujnik_2);
+        if(distance>30.0) leftSensor.setImageResource(R.drawable.czujnik_1);
+        if(distance>40.0) leftSensor.setImageResource(R.drawable.czujnik_0);
     }
     public void updateRightSensorView(String dist){
         Double distance = Double.valueOf(dist);
-        if(distance<=10.0){ rightSensor.setImageResource(R.drawable.czujnik_4); }
-        if(distance>10.0) {rightSensor.setImageResource(R.drawable.czujnik_3); }
-        if(distance>20.0){ rightSensor.setImageResource(R.drawable.czujnik_2); }
-        if(distance>30.0){ rightSensor.setImageResource(R.drawable.czujnik_1); }
-        if(distance>40.0) {rightSensor.setImageResource(R.drawable.czujnik_0); }
+        if(distance<=10.0) rightSensor.setImageResource(R.drawable.czujnik_4);
+        if(distance>10.0) rightSensor.setImageResource(R.drawable.czujnik_3);
+        if(distance>20.0) rightSensor.setImageResource(R.drawable.czujnik_2);
+        if(distance>30.0) rightSensor.setImageResource(R.drawable.czujnik_1);
+        if(distance>40.0) rightSensor.setImageResource(R.drawable.czujnik_0);
     }
     public void updateBackSensorView(String dist){
         Double distance = Double.valueOf(dist);
-        if(distance<=10.0){ backSensor.setImageResource(R.drawable.czujnik_4); }
-        if(distance>10.0) {backSensor.setImageResource(R.drawable.czujnik_3); }
-        if(distance>20.0){ backSensor.setImageResource(R.drawable.czujnik_2); }
-        if(distance>30.0){ backSensor.setImageResource(R.drawable.czujnik_1); }
-        if(distance>40.0) {backSensor.setImageResource(R.drawable.czujnik_0); }
+        if(distance<=10.0) backSensor.setImageResource(R.drawable.czujnik_4);
+        if(distance>10.0) backSensor.setImageResource(R.drawable.czujnik_3);
+        if(distance>20.0) backSensor.setImageResource(R.drawable.czujnik_2);
+        if(distance>30.0) backSensor.setImageResource(R.drawable.czujnik_1);
+        if(distance>40.0) backSensor.setImageResource(R.drawable.czujnik_0);
     }
 
     private void resetSensorImage(){
