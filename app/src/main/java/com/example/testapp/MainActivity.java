@@ -139,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
         rightMotorPowerAtRightTurn  =   findViewById(R.id.rightMotorPowerTurnRight);
         autonomic_keepgoing =   findViewById(R.id.keepgoing);
 
-        realTime.setBackgroundColor(Color.GREEN);
         autonomic_forward.setVisibility(View.INVISIBLE);
         autonomic_keepgoing.setVisibility(View.INVISIBLE);
         autonomic_stop.setVisibility(View.INVISIBLE);
@@ -371,8 +370,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void switchButtons(){
         if(robotMODE==AUTONOMIC){
-            realTime.setBackgroundColor(Color.RED);
-            autonomic.setBackgroundColor(Color.GREEN);
+            realTime.setBackgroundResource(R.drawable.realtime_off);
+            autonomic.setBackgroundResource(R.drawable.autonomic_on);
             rearBtn.setVisibility(View.INVISIBLE);
             leftBtn.setVisibility(View.INVISIBLE);
             rightBtn.setVisibility(View.INVISIBLE);
@@ -394,8 +393,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(robotMODE==REALTIME){
-            realTime.setBackgroundColor(Color.GREEN);
-            autonomic.setBackgroundColor(Color.RED);
+            realTime.setBackgroundResource(R.drawable.realtime_on);
+            autonomic.setBackgroundResource(R.drawable.autonomic_off);
             rearBtn.setVisibility(View.VISIBLE);
             leftBtn.setVisibility(View.VISIBLE);
             rightBtn.setVisibility(View.VISIBLE);
@@ -520,12 +519,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateWifiButton(){
-        connectBtn.setText((wifiConnection) ? "Connected to Robot WiFi" : "Not Connected to Robot WiFi");
-        connectBtn.setBackgroundColor((wifiConnection) ? Color.parseColor("#00ff00") : Color.parseColor("#ff0000"));
+        connectBtn.setBackgroundResource((wifiConnection) ? R.drawable.wifi_on : R.drawable.wifi_off);
     }
     public void updateWebSButton(){
-        websocketBtn.setText((wsConnection) ? "Connected to Robot" : "Not Connected to Robot");
-        websocketBtn.setBackgroundColor((wsConnection) ? Color.parseColor("#00ff00") : Color.parseColor("#ff0000"));
+        websocketBtn.setBackgroundResource((wsConnection) ? R.drawable.server_on : R.drawable.server_off);
         if(!wsConnection){
             resetSensorImage();
         }
