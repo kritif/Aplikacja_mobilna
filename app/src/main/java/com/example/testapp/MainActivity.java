@@ -378,7 +378,7 @@ public class MainActivity extends AppCompatActivity {
                     recordingMove = false;
                     if(wsConnection) {
                         String track = "";
-                        for(int i=0; i<trackData.size(); i++) track += trackData.get(i).toString();
+                        for(int i=0; i<trackData.size(); i++) track += trackData.get(i).toString()+";";
                         autonomicIsRunning = sendMessageWithResult(AUT_GO_3+"="+track);
                     }
                 }else{
