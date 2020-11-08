@@ -119,9 +119,9 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, 0);
         }
-        timer = new CountDownTimer(3600000, 100) {
+        timer = new CountDownTimer(3600000, 10) {
             public void onTick(long millisUntilFinished) {
-                time+=0.1d;
+                time+=0.01d;
             }
 
             public void onFinish() {
