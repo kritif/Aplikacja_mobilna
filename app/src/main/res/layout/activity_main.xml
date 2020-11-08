@@ -295,4 +295,12 @@
         android:hint="right power right turn"
         android:inputType="number" />
 
+    <Button
+        android:id="@+id/record_move"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="280dp"
+        android:layout_marginTop="550dp"
+        android:text="RECORD" />
+
 </RelativeLayout>

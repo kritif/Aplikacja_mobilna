@@ -14,6 +14,7 @@ import android.net.wifi.WifiConfiguration;
 
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,6 +29,8 @@ import com.neovisionaries.ws.client.WebSocketFactory;
 import com.neovisionaries.ws.client.WebSocketState;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private Button              autonomic;
     private Button              autonomic_forward;
     private Button              autonomic_keepgoing;
+    private Button              autonomic_record;
     private Button              autonomic_stop;
     private Button              settings;
     private Button              update_settings;
@@ -79,12 +83,17 @@ public class MainActivity extends AppCompatActivity {
     private static final String     STOP =              "STOP";
     private static final String     AUT_GO_1 =          "A1GO";
     private static final String     AUT_GO_2 =          "A2GO";
+    private static final String     AUT_GO_3 =          "A3GO";
     private static final String     AUT_STOP =          "ASTOP";
 
     public  boolean     wifiConnection =        false;
     public  boolean     wsConnection =          false;
     public  boolean     autonomicIsRunning =    false;
+    public  boolean     recordingMove =         false;
     private String      robotMODE =             REALTIME;
+    public List trackData = new ArrayList();
+    public CountDownTimer timer;
+    public double         time = 0.0d;
 
     WifiReceiver        wifiReceiver;
     WebSocket           ws = null;
@@ -110,7 +119,15 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, 0);
         }
-        //
+        timer = new CountDownTimer(3600000, 100) {
+            public void onTick(long millisUntilFinished) {
+                time+=0.1d;
+            }
+
+            public void onFinish() {
+
+            }
+        };
         connectBtn          =   findViewById(R.id.scanBtn);
         websocketBtn        =   findViewById(R.id.wsBtn);
         forwardBtn          =   findViewById(R.id.forwardBtn);
@@ -138,9 +155,11 @@ public class MainActivity extends AppCompatActivity {
         leftMotorPowerAtRightTurn   =   findViewById(R.id.leftMotorPowerTurnRight);
         rightMotorPowerAtRightTurn  =   findViewById(R.id.rightMotorPowerTurnRight);
         autonomic_keepgoing =   findViewById(R.id.keepgoing);
+        autonomic_record = findViewById(R.id.record_move);
 
         autonomic_forward.setVisibility(View.INVISIBLE);
         autonomic_keepgoing.setVisibility(View.INVISIBLE);
+        autonomic_record.setVisibility(View.INVISIBLE);
         autonomic_stop.setVisibility(View.INVISIBLE);
 
         leftMotorPower.setVisibility(View.INVISIBLE);
@@ -178,10 +197,17 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(robotMODE==REALTIME && wsConnection) {
                     if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                        if(recordingMove){
+                            time = 0.0d;
+                            timer.start();
+                        }
                         sendMessage(FRONT);
                     }
                     if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                         sendMessage(STOP);
+                        timer.cancel();
+                        trackData.add(0,"back:"+Double.toString(time));
+                        time = 0.0d;
                     }
                 }
                 return false;
@@ -214,10 +240,17 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(robotMODE==REALTIME && wsConnection) {
                     if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                        if(recordingMove){
+                            time = 0.0d;
+                            timer.start();
+                        }
                         sendMessage(LEFT);
                     }
                     if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                         sendMessage(STOP);
+                        timer.cancel();
+                        trackData.add(0,"right:"+Double.toString(time));
+                        time = 0.0d;
                     }
                 }
                 return false;
@@ -228,10 +261,17 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(robotMODE==REALTIME && wsConnection) {
                     if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                        if(recordingMove){
+                            time = 0.0d;
+                            timer.start();
+                        }
                         sendMessage(RIGHT);
                     }
                     if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                         sendMessage(STOP);
+                        timer.cancel();
+                        trackData.add(0,"left:"+Double.toString(time));;
+                        time = 0.0d;
                     }
                 }
                 return false;
@@ -242,10 +282,17 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(robotMODE==REALTIME && wsConnection) {
                     if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                        if(recordingMove){
+                            time = 0.0d;
+                            timer.start();
+                        }
                         sendMessage(BACK);
                     }
                     if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                         sendMessage(STOP);
+                        timer.cancel();
+                        trackData.add(0,"front:"+Double.toString(time));;
+                        time = 0.0d;
                     }
                 }
                 return false;
@@ -324,6 +371,23 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        autonomic_record.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(recordingMove){
+                    recordingMove = false;
+                    if(wsConnection) {
+                        String track = "";
+                        for(int i=0; i<trackData.size(); i++) track += trackData.get(i).toString();
+                        autonomicIsRunning = sendMessageWithResult(AUT_GO_3+"="+track);
+                    }
+                }else{
+                    recordingMove = true;
+                    trackData.clear();
+                }
+            }
+        });
+
 
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -336,6 +400,7 @@ public class MainActivity extends AppCompatActivity {
                 turnRightBtn.setVisibility(View.INVISIBLE);
                 autonomic_forward.setVisibility(View.INVISIBLE);
                 autonomic_keepgoing.setVisibility(View.INVISIBLE);
+                autonomic_record.setVisibility(View.INVISIBLE);
                 autonomic_stop.setVisibility(View.INVISIBLE);
                 leftMotorPower.setVisibility(View.VISIBLE);
                 rightMotorPower.setVisibility(View.VISIBLE);
@@ -389,6 +454,7 @@ public class MainActivity extends AppCompatActivity {
             update_settings.setVisibility(View.INVISIBLE);
             autonomic_forward.setVisibility(View.VISIBLE);
             autonomic_keepgoing.setVisibility(View.VISIBLE);
+            autonomic_record.setVisibility(View.VISIBLE);
             autonomic_stop.setVisibility(View.VISIBLE);
         }
 
@@ -403,6 +469,7 @@ public class MainActivity extends AppCompatActivity {
             turnRightBtn.setVisibility(View.VISIBLE);
             autonomic_forward.setVisibility(View.INVISIBLE);
             autonomic_keepgoing.setVisibility(View.INVISIBLE);
+            autonomic_record.setVisibility(View.INVISIBLE);
             autonomic_stop.setVisibility(View.INVISIBLE);
             leftMotorPower.setVisibility(View.INVISIBLE);
             rightMotorPower.setVisibility(View.INVISIBLE);
